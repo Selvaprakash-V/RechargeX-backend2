@@ -33,8 +33,14 @@ const userSchema = new mongoose.Schema(
     },
 
     profilePhoto: {
-      type: String,
-      default: ""
+      data: {
+        type: String,  // Base64 encoded image data
+        default: ""
+      },
+      contentType: {
+        type: String,
+        default: ""
+      }
     },
 
     isActive: {

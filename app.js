@@ -21,8 +21,10 @@ app.use(
   })
 );
 
-app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Note: Profile photos are now stored in MongoDB, not in local files
 
 app.use("/plans", planRoutes);
 app.use("/users", userRoutes);

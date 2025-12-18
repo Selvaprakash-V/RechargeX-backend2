@@ -1,5 +1,17 @@
 const Feedback = require("../models/feedbackModel");
 
+// Helper function to convert stored image to data URL
+const getProfilePhotoUrl = (profilePhoto) => {
+  if (profilePhoto && profilePhoto.data && profilePhoto.contentType) {
+    return `data:${profilePhoto.contentType};base64,${profilePhoto.data}`;
+  }
+  // If it's already a string (data URL or URL), return as is
+  if (typeof profilePhoto === 'string') {
+    return profilePhoto;
+  }
+  return "";
+};
+
 // Create feedback
 exports.createFeedback = async (req, res) => {
   try {
@@ -30,9 +42,13 @@ exports.getApprovedFeedbacks = async (req, res) => {
     // Map to include user profile photo from the populated userId
     const feedbacksWithPhotos = feedbacks.map(feedback => {
       const feedbackObj = feedback.toObject();
+      // Get profile photo from populated user (stored as object with data and contentType)
+      const userPhoto = feedback.userId?.profilePhoto;
+      const photoUrl = getProfilePhotoUrl(userPhoto) || feedbackObj.profilePhoto || '';
+      
       return {
         ...feedbackObj,
-        profilePhoto: feedback.userId?.profilePhoto || feedbackObj.profilePhoto || ''
+        profilePhoto: photoUrl
       };
     });
     
