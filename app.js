@@ -12,12 +12,12 @@ const feedbackRoutes = require("./src/routes/feedbackRoute");
 
 connectDB();
 
-// CORS configuration for React frontend
+// CORS configuration - Allow all origins
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
+    credentials: false,
   })
 );
 
